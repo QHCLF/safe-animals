@@ -1,0 +1,13 @@
+{
+  "animals" : [
+    {
+      "id" : 0,
+      "name" : "bird",
+      "img_src": "",
+      "position_x": 0.000002039256185537032,
+      "position_y" : 90,
+      "position_z" : -2.033825520564871,
+      "scale_z": 2.4
+    }
+  ]
+}
