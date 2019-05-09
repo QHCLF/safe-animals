@@ -2,14 +2,13 @@
   <div id="app">
     <div class="head"></div>
     <showAnimal></showAnimal>
-
 <!--    <sendAnimal></sendAnimal>-->
   </div>
 </template>
 
 <script>
 
-import showAnimal from './components/showAnimal'
+import showAnimal from './components/showDetail'
 import sendAnimal from './components/sendAnimal'
 
 
