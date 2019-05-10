@@ -26,7 +26,7 @@
         name: "showDetail",
         data(){
             return{
-                posY: 125,
+                posY: 135,
                 allowNextFrame: true,
                 isDragging: false
             }
@@ -145,8 +145,8 @@
 
     .open{
         margin: auto;
-        width: 10%;
-        height: 12%;
+        width: 8%;
+        height: 10%;
         background-color: #a52a2a;
         position: absolute;
         top: 17%;
