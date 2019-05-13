@@ -1,44 +1,24 @@
 <template>
   <div id="app">
-    <div class="head"></div>
-    <showAnimal></showAnimal>
-<!--    <sendAnimal></sendAnimal>-->
+    <div id="nav">
+    </div>
+    <router-view/>
   </div>
 </template>
 
-<script>
-
-import showAnimal from './components/showDetail'
-import sendAnimal from './components/sendAnimal'
-
-
-export default {
-  name: 'app',
-  data(){
-    return{
+<style lang="stylus" scoped>
+    *{
+        margin: 0;
+        padding 0;
     }
-  },
-  methods:{
-
-
-  },
-  components:{
-    showAnimal,
-    sendAnimal
-  }
-}
-</script>
-
-<style>
-#app {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  background: radial-gradient(circle, #1CB5E0, #000046 100%)
-}
-  .head{
-    width: 100%;
-    height: 100px;
-  }
+    #app {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, #1CB5E0, #000046 100%)
+    }
+    .head{
+        width: 100%;
+        height: 100px;
+    }
 
 </style>

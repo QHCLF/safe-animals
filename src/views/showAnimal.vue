@@ -5,7 +5,8 @@
                 <li class="send"
                     v-for="(animal, index) in animals"
                     :key="index"
-                >{{animal}}</li>
+                    @click="selectAnimal(animal)"
+                >{{animal.name}}</li>
             </ul>
             <ul id="list12"></ul>
 
@@ -14,9 +15,10 @@
         <div class="item" id="item2">
             <ul id="list21">
                 <li class="send"
-                    v-for="(a, index) in animal"
+                    v-for="(a, index) in animals"
+                    @click="selectAnimal(a)"
                     :key="index"
-                >{{a}}</li>
+                >{{a.name}}</li>
             </ul>
             <ul id="list22">
             </ul>
@@ -25,25 +27,27 @@
         <div class="item" id="item3">
             <ul id="list31">
                 <li class="send"
-                    v-for="(a, index) in animals3"
+                    v-for="(a, index) in animals"
+                    @click="selectAnimal(a)"
                     :key="index"
                 >{{a.name}}</li>
             </ul>
             <ul id="list32">
             </ul>
         </div>
+
+        <router-view />
+
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
+    import axios from 'axios/index';
     export default {
         name:'showAnimal',
         data(){
             return{
-                animals: ["1", "2", "3", "4", "5"],
-                animal: ["1", "2", "3", "4"],
-                animals3: null,
+                animals: null,
                 scrollMove: null,
                 send1: null,//传送带
                 list1: null,//传送带的项目列表
@@ -56,9 +60,8 @@
         methods:{
             async initData() {
                 let animals = await axios.get('/data/animals.json');
-                this.animals3 = animals.data;
+                this.animals = animals.data;
             },
-
             init(){
                 this.send1 = document.getElementById("item1");
                 let l11 = document.getElementById("list11");
@@ -92,6 +95,9 @@
                 this.scrollMove = setInterval(this.scroll, 30, this.send1, this.list1);//数值越大，滚动速度越慢
                 setInterval(this.scroll, 30, this.send2, this.list2);
                 setInterval(this.scroll, 30, this.send3, this.list3);
+            },
+            selectAnimal(item){
+                this.$router.push(`${this.$route.path + 'showDetail/' + item.id}`);
             }
 
         },

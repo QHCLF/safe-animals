@@ -1,9 +1,11 @@
 <template>
     <div id="showDetail">
+        <i class="iconfont icon-left" id="left" @click="prev"></i>
         <div class="box">
-            <i class="iconfont icon-left" id="left"></i>
             <div class="left"></div>
             <div class="right"></div>
+            <div class="contain">
+            </div>
             <div class="center">
                 <div class="slid"></div>
             </div>
@@ -15,20 +17,24 @@
                  :style="{ top: posY + 'px' }"
             >
             </div>
-            <i class="iconfont icon-right" id="right"></i>
         </div>
+        <i class="iconfont icon-right" id="right" @click="next"></i>
 
     </div>
 </template>
 
 <script>
+    import axios from 'axios/index';
     export default {
         name: "showDetail",
         data(){
             return{
-                posY: 135,
+                posY: 125,
                 allowNextFrame: true,
-                isDragging: false
+                isDragging: false,
+                id: this.$route.params.detailId,
+                AnimalList: null,
+                currentAnimal: null
             }
         },
         methods:{
@@ -36,7 +42,8 @@
                 let dom = document.getElementById("showDetail");
                 this.posY = this.pageY - this.$el.getBoundingClientRect().left;
                 if (this.posY < 125) this.posY = 125;
-                if (this.posY > dom.offsetHeight) this.posY = dom.offsetHeight + 50;
+                console.log(dom.offsetHeight);
+                if (this.posY > dom.offsetHeight) this.posY = dom.offsetHeight - 25;
 
 
                 let center = document.getElementsByClassName("center")[0];
@@ -44,12 +51,14 @@
                 let left = document.getElementsByClassName("left")[0];
                 let right = document.getElementsByClassName("right")[0];
                 let box = document.getElementsByClassName("box")[0];
+                let contain = document.getElementsByClassName("contain")[0];
                 if(this.posY === 450){
                     center.classList.add("disappear");
                     open.classList.add("disappear");
                     left.classList.add("openBoxLeft");
                     right.classList.add("openBoxRight");
                     box.classList.add("openBox");
+                    contain.innerHTML = this.currentAnimal.name;
                 }
 
                 this.allowNextFrame = true;
@@ -68,10 +77,42 @@
                     this.pageY = event.pageY || event.targetTouches[0].pageY || event.originalEvent.targetTouches[0].pageY;
                     window.requestAnimationFrame(this.updatePos);
                 }
+            },
+            async getAnimalList(){
+                let animals = await axios.get('/data/animals.json');
+                this.AnimalList = animals.data;
+            },
+            prev(){
+                if(this.AnimalList.length > 0 && this.AnimalList.length !== 1){
+                    if(this.id === 0)
+                        this.id = 0;
+                    else
+                        this.id--;
+                }
+            },
+            next(){
+                if(this.AnimalList.length > 0 && this.AnimalList.length !== 1){
+                    if(this.id === this.AnimalList.length - 1)
+                        this.id = this.AnimalList.length - 1;
+                    else
+                        this.id++;
+                }
+            }
+
+
+
+        },
+        computed :{
+            getCurrent(){
+                this.currentAnimal = this.AnimalList[this.id];
+                return this.currentAnimal;
             }
         },
         created() {
             window.addEventListener('mouseup', this.onMouseUp);
+        },
+        mounted(){
+            this.getAnimalList();
         },
         beforeDestroy() {
             window.removeEventListener('mouseup', this.onMouseUp);
@@ -87,9 +128,10 @@
         margin: 0;
         padding: 0;
         text-align: center;
+        padding-top 75px;
     }
     .box{
-        width 316.26px;
+        width 285px;
         height: 300px;
         background-color: pink;
         margin: 0 auto;
@@ -115,6 +157,10 @@
         transform-origin right;
         animation openBoxRight 1.5s linear;
         animation-fill-mode forwards;
+    }
+    .contain{
+        position relative;
+        top: -175px;
     }
     #left{
         position: absolute;
@@ -150,7 +196,7 @@
         background-color: #a52a2a;
         position: absolute;
         top: 17%;
-        left: 48%;
+        left: 50%;
         transform: rotate(-30deg);
         border 1px solid gray;
     }
@@ -165,18 +211,18 @@
             transform rotateX(0) rotateY(0) translateY(0);
         }
         100%{
-            transform rotateX(25deg) rotateY(125deg) translateY(-15px);
+            transform rotateX(25deg) rotateY(120deg) translateY(-15px);
         }
     @keyframes openBoxRight
         0%{
             transform rotateX(0) rotateY(0) translateY(0);
         }
         100%{
-            transform rotateX(-25deg) rotateY(125deg) translateY(-15px);
+            transform rotateX(-25deg) rotateY(120deg) translateY(-15px);
         }
     @keyframes openBox
         0%{
-            width 316.26px;
+            width 285px;
             height 300px;
         }
         100%{
